@@ -228,12 +228,15 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
 }
 
 
+
 /**@brief Function for performing battery measurement and updating the Battery Level characteristic
  *        in Battery Service.
  */
 static void battery_level_update(void)
 {
-
+    /* somethinf change */
+    /* somthing change */
+    /* somthing change */
 }
 
 
