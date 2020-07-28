@@ -1,0 +1,133 @@
+
+/* ______ I N C L U D E - F I L E S __________________________________________*/
+#include <stdbool.h>
+#include <stdint.h>
+#include "nrf_delay.h"
+#include "nrf_pwr_mgmt.h"
+#include "nrf_sdh_soc.h"
+#include "nrf_sdh_ble.h"
+
+#include "bsp.h"
+#include "boards.h"
+
+#include "app_timer.h"
+
+/*______ L O C A L - D E F I N E S ___________________________________________*/
+#define APP_BLE_OBSERVER_PRIO 3  									/**< Application's BLE observer priority. You shouldn't need to modify this value. */
+#define APP_BLE_CONN_CFG_TAG  1                                     /**< A tag identifying the SoftDevice BLE configuration. */
+#define DEAD_BEEF             0xDEADBEEF                            /**< Value used as error code on stack dump, can be used to identify stack location on stack unwind. */
+
+/*______ L O C A L - T Y P E S _______________________________________________*/
+
+/*______ L O C A L - F U N C T I O N S - P R O T O T Y P E S _________________*/
+static void LED_Init(void);
+static void TIMER_Init(void);
+static void PWMM_Init(void);
+static void ble_stack_init(void);
+
+/*______ G L O B A L - D A T A _______________________________________________*/
+
+/*______ P R I V A T E - D A T A _____________________________________________*/
+
+/*______ L O C A L - D A T A _________________________________________________*/
+
+/*______ L O C A L - M A C R O S _____________________________________________*/
+
+/*______ I M P O R T - F U N C T I O N S - P R O T O T Y P E S _______________*/
+
+/*______ G L O B L E - F U N C T I O N S _____________________________________*/
+
+/* ************************************************************************** */
+/* Name:  main                                                                */
+/* Brife:                                                                     */
+/* ************************************************************************** */
+int main(void)
+{
+	TIMER_Init();
+	LED_Init();
+	//ble_stack_init();
+
+	while(1)
+	{
+		bsp_board_led_on(3);
+		nrf_delay_ms(1000);
+		bsp_board_led_off(3);
+		nrf_delay_ms(1000);
+	}
+ 
+	return -1;
+}
+
+/* ************************************************************************** */
+/* Name:  LED_Init                                                            */
+/* Brife:                                                                     */
+/* ************************************************************************** */
+static void LED_Init()
+{
+	ret_code_t err_code;
+
+	err_code = bsp_init(BSP_INIT_LEDS, NULL);
+
+	APP_ERROR_CHECK(err_code);
+}
+
+/* ************************************************************************** */
+/* Name:  TIMER_Init                                                            */
+/* Brife:                                                                     */
+/* ************************************************************************** */
+static void TIMER_Init()
+{
+	ret_code_t err_code;
+
+	err_code = app_timer_init();
+
+	APP_ERROR_CHECK(err_code);
+}
+
+/* ************************************************************************** */
+/* Name:  PWMM_Init                                                           */
+/* Brife:                                                                     */
+/* ************************************************************************** */
+static void PWMM_Init()
+{
+	ret_code_t err_code;
+
+	err_code = nrf_pwr_mgmt_init();
+
+	APP_ERROR_CHECK(err_code);
+}
+
+/* ************************************************************************** */
+/* Name:  ble_evt_handler                                                     */
+/* Brife:                                                                     */
+/* ************************************************************************** */
+static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
+{
+
+}
+
+/* ************************************************************************** */
+/* Name:  ble_stack_init                                                      */
+/* Brife:                                                                     */
+/* ************************************************************************** */
+static void ble_stack_init(void)
+{
+    ret_code_t err_code;
+
+    err_code = nrf_sdh_enable_request();
+    APP_ERROR_CHECK(err_code);
+
+    // Configure the BLE stack using the default settings.
+    // Fetch the start address of the application RAM.
+    uint32_t ram_start = 0;
+    err_code = nrf_sdh_ble_default_cfg_set(APP_BLE_CONN_CFG_TAG, &ram_start);
+    APP_ERROR_CHECK(err_code);
+
+    // Enable BLE stack.
+    err_code = nrf_sdh_ble_enable(&ram_start);
+    APP_ERROR_CHECK(err_code);
+
+    // Register handler for BLE events.
+    NRF_SDH_BLE_OBSERVER(m_ble_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, NULL);
+}
+/*_________ end of main.c ____________________________________________________*/
