@@ -62,6 +62,7 @@
 #include "ble_hrs.h"
 #include "ble_dis.h"
 #include "ble_conn_params.h"
+#include "sensorsim.h"
 #include "nrf_sdh.h"
 #include "nrf_sdh_ble.h"
 #include "nrf_sdh_soc.h"
@@ -75,13 +76,13 @@
 #include "nrf_ble_qwr.h"
 #include "ble_conn_state.h"
 #include "nrf_pwr_mgmt.h"
-#include "sensorsim.h"
 
 #include "nrf_log.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
-#define DEVICE_NAME                         "Nordic_HRM" 
 
+
+#define DEVICE_NAME                         "Nordic_HRM"                            /**< Name of device. Will be included in the advertising data. */
 #define MANUFACTURER_NAME                   "NordicSemiconductor"                   /**< Manufacturer. Will be passed to Device Information Service. */
 #define APP_ADV_INTERVAL                    300                                     /**< The advertising interval (in units of 0.625 ms. This value corresponds to 187.5 ms). */
 
@@ -228,16 +229,26 @@ static void pm_evt_handler(pm_evt_t const * p_evt)
 }
 
 
-
 /**@brief Function for performing battery measurement and updating the Battery Level characteristic
  *        in Battery Service.
  */
 static void battery_level_update(void)
 {
-    /* somethinf change */
-    /* somthing change */
-    /* somthing change */
-    /* somthing change */
+    ret_code_t err_code;
+    uint8_t  battery_level;
+
+    battery_level = (uint8_t)sensorsim_measure(&m_battery_sim_state, &m_battery_sim_cfg);
+
+    err_code = ble_bas_battery_level_update(&m_bas, battery_level, BLE_CONN_HANDLE_ALL);
+    if ((err_code != NRF_SUCCESS) &&
+        (err_code != NRF_ERROR_INVALID_STATE) &&
+        (err_code != NRF_ERROR_RESOURCES) &&
+        (err_code != NRF_ERROR_BUSY) &&
+        (err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
+       )
+    {
+        APP_ERROR_HANDLER(err_code);
+    }
 }
 
 
@@ -265,7 +276,30 @@ static void battery_level_meas_timeout_handler(void * p_context)
  */
 static void heart_rate_meas_timeout_handler(void * p_context)
 {
+    static uint32_t cnt = 0;
+    ret_code_t      err_code;
+    uint16_t        heart_rate;
 
+    UNUSED_PARAMETER(p_context);
+
+    heart_rate = (uint16_t)sensorsim_measure(&m_heart_rate_sim_state, &m_heart_rate_sim_cfg);
+
+    cnt++;
+    err_code = ble_hrs_heart_rate_measurement_send(&m_hrs, heart_rate);
+    if ((err_code != NRF_SUCCESS) &&
+        (err_code != NRF_ERROR_INVALID_STATE) &&
+        (err_code != NRF_ERROR_RESOURCES) &&
+        (err_code != NRF_ERROR_BUSY) &&
+        (err_code != BLE_ERROR_GATTS_SYS_ATTR_MISSING)
+       )
+    {
+        APP_ERROR_HANDLER(err_code);
+    }
+
+    // Disable RR Interval recording every third heart rate measurement.
+    // NOTE: An application will normally not do this. It is done here just for testing generation
+    // of messages without RR Interval measurements.
+    m_rr_interval_enabled = ((cnt % 3) != 0);
 }
 
 
@@ -280,7 +314,29 @@ static void rr_interval_timeout_handler(void * p_context)
 {
     UNUSED_PARAMETER(p_context);
 
+    if (m_rr_interval_enabled)
+    {
+        uint16_t rr_interval;
 
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+        rr_interval = (uint16_t)sensorsim_measure(&m_rr_interval_sim_state,
+                                                  &m_rr_interval_sim_cfg);
+        ble_hrs_rr_interval_add(&m_hrs, rr_interval);
+    }
 }
 
 
@@ -474,7 +530,26 @@ static void services_init(void)
  */
 static void sensor_simulator_init(void)
 {
+    m_battery_sim_cfg.min          = MIN_BATTERY_LEVEL;
+    m_battery_sim_cfg.max          = MAX_BATTERY_LEVEL;
+    m_battery_sim_cfg.incr         = BATTERY_LEVEL_INCREMENT;
+    m_battery_sim_cfg.start_at_max = true;
 
+    sensorsim_init(&m_battery_sim_state, &m_battery_sim_cfg);
+
+    m_heart_rate_sim_cfg.min          = MIN_HEART_RATE;
+    m_heart_rate_sim_cfg.max          = MAX_HEART_RATE;
+    m_heart_rate_sim_cfg.incr         = HEART_RATE_INCREMENT;
+    m_heart_rate_sim_cfg.start_at_max = false;
+
+    sensorsim_init(&m_heart_rate_sim_state, &m_heart_rate_sim_cfg);
+
+    m_rr_interval_sim_cfg.min          = MIN_RR_INTERVAL;
+    m_rr_interval_sim_cfg.max          = MAX_RR_INTERVAL;
+    m_rr_interval_sim_cfg.incr         = RR_INTERVAL_INCREMENT;
+    m_rr_interval_sim_cfg.start_at_max = false;
+
+    sensorsim_init(&m_rr_interval_sim_state, &m_rr_interval_sim_cfg);
 }
 
 
@@ -560,7 +635,18 @@ static void conn_params_init(void)
  */
 static void sleep_mode_enter(void)
 {
+    ret_code_t err_code;
 
+    err_code = bsp_indication_set(BSP_INDICATE_IDLE);
+    APP_ERROR_CHECK(err_code);
+
+    // Prepare wakeup buttons.
+    err_code = bsp_btn_ble_sleep_mode_prepare();
+    APP_ERROR_CHECK(err_code);
+
+    // Go to system-off mode (this function will not return; wakeup will cause a reset).
+    err_code = sd_power_system_off();
+    APP_ERROR_CHECK(err_code);
 }
 
 
@@ -776,7 +862,6 @@ static void peer_manager_init(void)
 
 /**@brief Function for initializing the Advertising functionality.
  */
-
 static void advertising_init(void)
 {
     ret_code_t             err_code;
@@ -809,7 +894,16 @@ static void advertising_init(void)
  */
 static void buttons_leds_init(bool * p_erase_bonds)
 {
+    ret_code_t err_code;
+    bsp_event_t startup_event;
 
+    err_code = bsp_init(BSP_INIT_LEDS | BSP_INIT_BUTTONS, bsp_event_handler);
+    APP_ERROR_CHECK(err_code);
+
+    err_code = bsp_btn_ble_init(NULL, &startup_event);
+    APP_ERROR_CHECK(err_code);
+
+    *p_erase_bonds = (startup_event == BSP_EVENT_CLEAR_BONDING_DATA);
 }
 
 
