@@ -888,21 +888,6 @@
               <FilePath>..\..\external\nrf_cc310\lib\cortex-m4\hard-float\short-wchar\nrf_cc310_0.9.13.lib</FilePath>
             </File>
             <File>
-              <FileName>oberon_mbedtls_3.0.5.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\external\nrf_oberon\lib\cortex-m4\hard-float\short-wchar\oberon_mbedtls_3.0.5.lib</FilePath>
-            </File>
-            <File>
-              <FileName>app_timer2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\components\libraries\timer\app_timer2.c</FilePath>
-            </File>
-            <File>
-              <FileName>drv_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\components\libraries\timer\drv_rtc.c</FilePath>
-            </File>
-            <File>
               <FileName>mem_manager.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\libraries\mem_manager\mem_manager.c</FilePath>
@@ -911,6 +896,11 @@
               <FileName>nrf_sortlist.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\libraries\sortlist\nrf_sortlist.c</FilePath>
+            </File>
+            <File>
+              <FileName>oberon_3.0.5.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\..\external\nrf_oberon\lib\cortex-m4\hard-float\short-wchar\oberon_3.0.5.lib</FilePath>
             </File>
           </Files>
         </Group>
@@ -1879,21 +1869,6 @@
               <FilePath>..\..\external\nrf_cc310\lib\cortex-m4\hard-float\short-wchar\nrf_cc310_0.9.13.lib</FilePath>
             </File>
             <File>
-              <FileName>oberon_mbedtls_3.0.5.lib</FileName>
-              <FileType>4</FileType>
-              <FilePath>..\..\external\nrf_oberon\lib\cortex-m4\hard-float\short-wchar\oberon_mbedtls_3.0.5.lib</FilePath>
-            </File>
-            <File>
-              <FileName>app_timer2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\components\libraries\timer\app_timer2.c</FilePath>
-            </File>
-            <File>
-              <FileName>drv_rtc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\..\components\libraries\timer\drv_rtc.c</FilePath>
-            </File>
-            <File>
               <FileName>mem_manager.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\libraries\mem_manager\mem_manager.c</FilePath>
@@ -1902,6 +1877,11 @@
               <FileName>nrf_sortlist.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\..\components\libraries\sortlist\nrf_sortlist.c</FilePath>
+            </File>
+            <File>
+              <FileName>oberon_3.0.5.lib</FileName>
+              <FileType>4</FileType>
+              <FilePath>..\..\external\nrf_oberon\lib\cortex-m4\hard-float\short-wchar\oberon_3.0.5.lib</FilePath>
             </File>
           </Files>
         </Group>

@@ -22,31 +22,95 @@ Dialog DLL:      TCM.DLL V1.14.9.0
  
 <h2>Project:</h2>
 F:\Embedded_Technology\NRF_Series\workspace\NRF52832_ble_demo\project\mdk5\NRF52832_First_Demo.uvprojx
-Project File Date:  07/25/2020
+Project File Date:  07/29/2020
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 2 (build 183)', folder: 'D:\Program Files\MDK\ARM\ARMCC\Bin'
 Build target 'NRF52832'
-linking...
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol pwr_mgmt_data0$$Base (referred from nrf_pwr_mgmt.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol pwr_mgmt_data0$$Limit (referred from nrf_pwr_mgmt.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol pwr_mgmt_data1$$Base (referred from nrf_pwr_mgmt.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol pwr_mgmt_data1$$Limit (referred from nrf_pwr_mgmt.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol pwr_mgmt_data2$$Base (referred from nrf_pwr_mgmt.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol pwr_mgmt_data2$$Limit (referred from nrf_pwr_mgmt.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol log_dynamic_data$$Base (referred from nrf_log_frontend.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol sdh_req_observers1$$Base (referred from nrf_sdh.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol sdh_req_observers1$$Limit (referred from nrf_sdh.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol sdh_stack_observers1$$Base (referred from nrf_sdh.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol sdh_stack_observers1$$Limit (referred from nrf_sdh.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol sdh_state_observers1$$Base (referred from nrf_sdh.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol sdh_state_observers1$$Limit (referred from nrf_sdh.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol sdh_soc_observers1$$Base (referred from nrf_sdh_soc.o). Unused section has been removed.
-.\Objects\NRF52832_First_Demo.axf: Warning: L6330W: Undefined symbol sdh_soc_observers1$$Limit (referred from nrf_sdh_soc.o). Unused section has been removed.
-Program Size: Code=75560 RO-data=12416 RW-data=712 ZI-data=23256  
-Finished: 0 information, 15 warning and 0 error messages.
-FromELF: creating hex file...
-".\Objects\NRF52832_First_Demo.axf" - 0 Error(s), 15 Warning(s).
+compiling drv_rtc.c...
+..\..\components\libraries\timer\drv_rtc.c(74): error:  #94-D: the size of an array must be greater than zero
+  static drv_rtc_handler_t m_handlers[DRV_RTC_ENABLED_COUNT];
+..\..\components\libraries\timer\drv_rtc.c(75): error:  #94-D: the size of an array must be greater than zero
+  static drv_rtc_cb_t      m_cb[DRV_RTC_ENABLED_COUNT];
+..\..\components\libraries\timer\drv_rtc.c(74): warning:  #550-D: variable "m_handlers" was set but never used
+  static drv_rtc_handler_t m_handlers[DRV_RTC_ENABLED_COUNT];
+..\..\components\libraries\timer\drv_rtc.c: 1 warning, 2 errors
+compiling app_timer2.c...
+..\..\components\libraries\timer\app_timer2.c(72): error:  #20: identifier "DRV_RTC_RTC1_INST_IDX" is undefined
+  static drv_rtc_t m_rtc_inst = 
+RV_RTC_INSTANCE(1);
+..\..\components\libraries\timer\app_timer2.c(132): error:  #136: struct "app_timer_t" has no field "list_item"
+      app_timer_t * p0 = 
+ONTAINER_OF(p_item0, app_timer_t, list_item);
+..\..\components\libraries\timer\app_timer2.c(133): error:  #136: struct "app_timer_t" has no field "list_item"
+      app_timer_t * p1 = 
+ONTAINER_OF(p_item1, app_timer_t, list_item);
+..\..\components\libraries\timer\app_timer2.c(135): error:  #136: struct "app_timer_t" has no field "end_val"
+      uint64_t p0_end = p0->end_val;
+..\..\components\libraries\timer\app_timer2.c(136): error:  #136: struct "app_timer_t" has no field "end_val"
+      uint64_t p1_end = p1->end_val;
+..\..\components\libraries\timer\app_timer2.c(162): error:  #136: struct "app_timer_t" has no field "handler"
+      
+SSERT(p_timer->handler);
+..\..\components\libraries\timer\app_timer2.c(165): error:  #136: struct "app_timer_t" has no field "active"
+      if ((m_global_active == 
+rue) && (p_timer != 
+ULL) && (p_timer->active))
+..\..\components\libraries\timer\app_timer2.c(167): error:  #136: struct "app_timer_t" has no field "end_val"
+          if (get_now() >= p_timer->end_val) {
+..\..\components\libraries\timer\app_timer2.c(169): error:  #136: struct "app_timer_t" has no field "repeat_period"
+              if (p_timer->repeat_period == 0)
+..\..\components\libraries\timer\app_timer2.c(171): error:  #136: struct "app_timer_t" has no field "active"
+                  p_timer->active = false;
+..\..\components\libraries\timer\app_timer2.c(183): error:  #136: struct "app_timer_t" has no field "p_context"
+              
+RF_LOG_DEBUG("Timer expired (context: %d)", (uint32_t)p_timer->p_context)
+..\..\components\libraries\timer\app_timer2.c(184): error:  #136: struct "app_timer_t" has no field "handler"
+              p_timer->handler(p_timer->p_context);
+..\..\components\libraries\timer\app_timer2.c(184): error:  #136: struct "app_timer_t" has no field "p_context"
+              p_timer->handler(p_timer->p_context);
+..\..\components\libraries\timer\app_timer2.c(187): error:  #136: struct "app_timer_t" has no field "repeat_period"
+              if ((p_timer->repeat_period) && (p_timer->active))
+..\..\components\libraries\timer\app_timer2.c(187): error:  #136: struct "app_timer_t" has no field "active"
+              if ((p_timer->repeat_period) && (p_timer->active))
+..\..\components\libraries\timer\app_timer2.c(189): error:  #136: struct "app_timer_t" has no field "end_val"
+                  p_timer->end_val += p_timer->repeat_period;
+..\..\components\libraries\timer\app_timer2.c(189): error:  #136: struct "app_timer_t" has no field "repeat_period"
+                  p_timer->end_val += p_timer->repeat_period;
+..\..\components\libraries\timer\app_timer2.c(190): error:  #136: struct "app_timer_t" has no field "list_item"
+                  nrf_sortlist_add(&m_app_timer_sortlist, &p_timer->list_item);
+..\..\components\libraries\timer\app_timer2.c(196): error:  #136: struct "app_timer_t" has no field "list_item"
+              nrf_sortlist_add(&m_app_timer_sortlist, &p_timer->list_item);
+..\..\components\libraries\timer\app_timer2.c(220): error:  #136: struct "app_timer_t" has no field "end_val"
+      int64_t remaining = (int64_t)(p_timer->end_val - get_now());
+..\..\components\libraries\timer\app_timer2.c(224): error:  #136: struct "app_timer_t" has no field "end_val"
+                  (app_timer_cnt_get() + 
+PP_TIMER_RTC_MAX_VALUE) : p_timer->end_val;
+..\..\components\libraries\timer\app_timer2.c(254): error:  #136: struct "app_timer_t" has no field "list_item"
+      return p_next_item ? 
+ONTAINER_OF(p_next_item, app_timer_t, list_item) : NULL;
+..\..\components\libraries\timer\app_timer2.c(260): error:  #136: struct "app_timer_t" has no field "list_item"
+      return p_next_item ? 
+ONTAINER_OF(p_next_item, app_timer_t, list_item) : NULL;
+..\..\components\libraries\timer\app_timer2.c(274): error:  #136: struct "app_timer_t" has no field "active"
+              p_next->active = false;
+..\..\components\libraries\timer\app_timer2.c(340): error:  #136: struct "app_timer_t" has no field "end_val"
+              else if (p_next->end_val < mp_active_timer->end_val)
+..\..\components\libraries\timer\app_timer2.c(340): error:  #136: struct "app_timer_t" has no field "end_val"
+              else if (p_next->end_val < mp_active_timer->end_val)
+..\..\components\libraries\timer\app_timer2.c(345): error:  #136: struct "app_timer_t" has no field "active"
+                  if (mp_active_timer->active)
+..\..\components\libraries\timer\app_timer2.c(348): error:  #136: struct "app_timer_t" has no field "list_item"
+                      nrf_sortlist_add(&m_app_timer_sortlist, &mp_active_timer->list_item);
+..\..\components\libraries\timer\app_timer2.c(356): error:  #136: struct "app_timer_t" has no field "end_val"
+                  
+RF_LOG_INST_DEBUG(p_next->p_log, "Activating timer (CC:%d/%08x).", p_next->end_val, p_next->end_val);
+..\..\components\libraries\timer\app_timer2.c(356): error:  #136: struct "app_timer_t" has no field "end_val"
+                  
+RF_LOG_INST_DEBUG(p_next->p_log, "Activating timer (CC:%d/%08x).", p_next->end_val, p_next->end_val);
+..\..\components\libraries\timer\app_timer2.c: 0 warnings, 30 errors
+compiling main.c...
+".\Objects\NRF52832_First_Demo.axf" - 32 Error(s), 1 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -72,10 +136,11 @@ Package Vendor: NordicSemiconductor
    * Component: ARM::CMSIS:CORE:5.0.0
 
    * Component: NordicSemiconductor::Device:Startup:8.6.1
-      Source file:   Device\Source\system_nrf52.c
-      Include file:  Device\Include\system_nrf52.h
       Source file:   Device\Source\arm\arm_startup_nrf52.s
-Build Time Elapsed:  00:00:04
+      Include file:  Device\Include\system_nrf52.h
+      Source file:   Device\Source\system_nrf52.c
+Target not created.
+Build Time Elapsed:  00:00:08
 </pre>
 </body>
 </html>
