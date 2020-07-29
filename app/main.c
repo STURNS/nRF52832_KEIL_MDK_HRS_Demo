@@ -237,6 +237,7 @@ static void battery_level_update(void)
     /* somethinf change */
     /* somthing change */
     /* somthing change */
+    /* somthing change */
 }
 
 
